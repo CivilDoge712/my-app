@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My App</title>
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <h1>Offline App</h1>
+    <button onclick="alert('Hello!')">Click Me</button>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
