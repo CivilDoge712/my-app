@@ -1,12 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>My Offline App</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" href="icon.png">
 </head>
+
+
 <body>
-    <h1>Offline App</h1>
-    <button onclick="alert('Hello!')">Click Me</button>
+    <div class="content">
+        <h1>Welcome Home</h1>
+        <p>This is your main dashboard.</p>
+    </div>
+
+    <!-- 2-Button Navbar for Index -->
+    <nav class="navbar">
+        <a href="settings.html" class="nav-item">⚙️<span>Settings</span></a>
+        <a href="info.html" class="nav-item">📊<span>Info</span></a>
+    </nav>
+
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');

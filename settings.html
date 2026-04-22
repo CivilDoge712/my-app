@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" href="icon.png">
+</head>
+
+
+<body>
+    <div class="top-bar">
+        <a href="index.html" class="back-btn">＜ Back</a>
+    </div>
+
+    <div class="content">
+        <h2>Settings</h2>
+        <div class="card">
+            <h3>Data Management</h3>
+            <button onclick="resetStats()" class="btn-danger">Reset Total Completed</button>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <a href="settings.html" class="nav-item">⚙️<span>Settings</span></a>
+        <a href="info.html" class="nav-item">📊<span>Info</span></a>
+        <a href="index.html" class="nav-item">🏠<span>Home</span></a>
+    </nav>
+
+    <script>
+        function resetStats() {
+            if(confirm("Reset all progress?")) {
+                localStorage.setItem('completed', 0);
+                alert("Stats cleared.");
+            }
+        }
+    </script>
+</body>
+</html>

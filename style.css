@@ -1,0 +1,55 @@
+body {
+    font-family: -apple-system, sans-serif;
+    margin: 0;
+    background-color: #f2f2f7;
+    padding-bottom: 100px; /* Space for navbar */
+}
+
+.content { padding: 20px; }
+
+.top-bar {
+    position: sticky;
+    top: 0;
+    padding-top: env(safe-area-inset-top);
+    background: white;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    height: 44px;
+    border-bottom: 1px solid #d1d1d6;
+}
+
+.back-btn { text-decoration: none; color: #007aff; font-size: 17px; }
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-top: 10px;
+}
+
+.navbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    border-top: 1px solid #d1d1d6;
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: env(safe-area-inset-bottom);
+    height: 60px;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #007aff;
+    font-size: 11px;
+}
+
+.btn-primary { background: #34c759; color: white; border: none; padding: 12px 20px; border-radius: 8px; width: 100%; font-size: 16px; }
+.btn-danger { background: #ff3b30; color: white; border: none; padding: 12px 20px; border-radius: 8px; width: 100%; font-size: 16px; }

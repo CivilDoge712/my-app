@@ -1,5 +1,13 @@
-const cacheName = 'v1';
-const assets = ['./', './index.html'];
+const cacheName = 'offline-v1';
+const assets = [
+  './',
+  './index.html',
+  './settings.html',
+  './info.html',
+  './style.css',
+  './manifest.json',
+  './icon.png'
+];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(cacheName).then((cache) => cache.addAll(assets)));
