@@ -46,18 +46,15 @@
         }
 
         function deleteTask(index) {
+            if (navigator.vibrate) {
+                navigator.vibrate(50); 
+            }
+
             let total = parseInt(localStorage.getItem('completed') || 0);
             localStorage.setItem('completed', total + 1);
 
             tasks.splice(index, 1);
-            
             saveAndRender();
-
-        }
-
-        function saveAndRender() {
-            localStorage.setItem('myTasks', JSON.stringify(tasks));
-            renderTasks();
         }
 
         function renderTasks() {
@@ -65,13 +62,10 @@
             list.innerHTML = tasks.map((task, i) => `
                 <div class="card" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
                     <span style="flex: 1;">${task.text}</span>
-                    <button onclick="deleteTask(${i})" style="background: none; border: none; color: #ff3b30; font-size: 24px; padding: 5px 10px;">✕</button>
+                    <!-- Changed X to a green Tick -->
+                    <button onclick="deleteTask(${i})" style="background: none; border: none; color: #34c759; font-size: 24px; padding: 5px 10px;">✔</button>
                 </div>
             `).join('');
-        }
-
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
         }
     </script>
 
