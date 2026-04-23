@@ -17,7 +17,6 @@
         <div class="card">
             <p style="color: #8e8e93;">Total Completed</p>
             <h1 id="stat-count" style="font-size: 48px; margin: 10px 0;">0</h1>
-            <button onclick="addOne()" class="btn-primary">+ Finish Task</button>
         </div>
     </div>
 
@@ -30,12 +29,6 @@
     <script>
         let count = localStorage.getItem('completed') || 0;
         document.getElementById('stat-count').innerText = count;
-
-        function addOne() {
-            count++;
-            document.getElementById('stat-count').innerText = count;
-            localStorage.setItem('completed', count);
-        }
     </script>
 </body>
 </html>

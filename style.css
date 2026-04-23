@@ -11,6 +11,10 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
 /* 2. Top Bar (Back Button Area) */
 .top-bar {
     position: sticky;
@@ -53,6 +57,12 @@ input[type="text"] {
 }
 
 /* 5. Buttons */
+
+#taskList button:active {
+    background-color: rgba(255, 59, 48, 0.1);
+    border-radius: 50%;
+}
+
 .btn-primary { 
     background: #34c759; 
     color: white; 
@@ -72,6 +82,18 @@ input[type="text"] {
     width: 100%;
     font-size: 16px;
 }
+
+.btn-primary:active {
+    background-color: #248a3d !important;
+    transform: scale(0.98);
+}
+
+.btn-danger:active {
+    background-color: #b32b23 !important;
+    transform: scale(0.98);
+}
+
+
 
 /* 6. Bottom Navbar */
 .navbar {
@@ -99,3 +121,9 @@ input[type="text"] {
 }
 
 .nav-item span { margin-top: 4px; }
+
+.nav-item:active, .back-btn:active {
+    opacity: 0.5; /* This is how standard iOS icons react */
+    background-color: rgba(0, 122, 255, 0.1); /* Very light blue flash */
+    border-radius: 8px;
+}
