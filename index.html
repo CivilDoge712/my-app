@@ -34,33 +34,25 @@
     </nav>
 
     <script>
-        // Load tasks from storage when app opens
         let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
         renderTasks();
 
         function addTask() {
             const input = document.getElementById('taskInput');
             if (input.value.trim() === "") return;
-            
             tasks.push({ text: input.value, completed: false });
             input.value = "";
             saveAndRender();
         }
 
-        function toggleTask(index) {
-            tasks[index].completed = !tasks[index].completed;
-            
-            // If completed, also update your "Total Completed" stat from earlier
-            if(tasks[index].completed) {
-                let total = parseInt(localStorage.getItem('completed') || 0);
-                localStorage.setItem('completed', total + 1);
-            }
-            saveAndRender();
-        }
-
         function deleteTask(index) {
+            let total = parseInt(localStorage.getItem('completed') || 0);
+            localStorage.setItem('completed', total + 1);
+
             tasks.splice(index, 1);
+            
             saveAndRender();
+
         }
 
         function saveAndRender() {
@@ -71,19 +63,17 @@
         function renderTasks() {
             const list = document.getElementById('taskList');
             list.innerHTML = tasks.map((task, i) => `
-                <div class="card" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; opacity: ${task.completed ? 0.5 : 1}">
-                    <span onclick="toggleTask(${i})" style="flex: 1; cursor: pointer; text-decoration: ${task.completed ? 'line-through' : 'none'}">
-                        ${task.text}
-                    </span>
-                    <button onclick="deleteTask(${i})" style="background: none; border: none; color: #ff3b30; font-size: 18px;">✕</button>
+                <div class="card" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="flex: 1;">${task.text}</span>
+                    <button onclick="deleteTask(${i})" style="background: none; border: none; color: #ff3b30; font-size: 24px; padding: 5px 10px;">✕</button>
                 </div>
             `).join('');
         }
 
-        // Register Service Worker for offline use
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         }
     </script>
+
 </body>
 </html>
