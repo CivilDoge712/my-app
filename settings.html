@@ -1,37 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <link rel="stylesheet" href="style.css">
-    <link rel="apple-touch-icon" href="icon.png">
 </head>
-
-
 <body>
-    <div class="top-bar">
-        <a href="index.html" class="back-btn">＜ Back</a>
-    </div>
-
+    <div class="top-bar"><a href="index.html" class="back-btn">＜ Back</a></div>
     <div class="content">
         <h2>Settings</h2>
-        <div class="card">
-            <h3>Data Management</h3>
+        <div class="card" style="flex-direction: column; align-items: flex-start;">
+            <h3 style="margin-top:0;">Data</h3>
             <button onclick="resetStats()" class="btn-danger">Reset Total Completed</button>
+            <button onclick="clearTasks()" class="btn-danger" style="margin-top:10px; background:#8e8e93;">Clear Task List</button>
         </div>
     </div>
-
     <nav class="navbar">
         <a href="settings.html" class="nav-item">⚙️<span>Settings</span></a>
         <a href="info.html" class="nav-item">📊<span>Info</span></a>
         <a href="index.html" class="nav-item">🏠<span>Home</span></a>
     </nav>
-
     <script>
         function resetStats() {
-            if(confirm("Reset all progress?")) {
-                localStorage.setItem('completed', 0);
-                alert("Stats cleared.");
-            }
+            if(confirm("Reset count?")) { localStorage.setItem('completed', 0); alert("Reset!"); }
+        }
+        function clearTasks() {
+            if(confirm("Delete all tasks?")) { localStorage.setItem('myTasks', '[]'); location.reload(); }
         }
     </script>
 </body>

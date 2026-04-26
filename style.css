@@ -1,26 +1,20 @@
-/* 1. Core Layout & iPhone Font */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, sans-serif;
     margin: 0;
     background-color: #f2f2f7;
-    padding-bottom: 100px; 
+    padding-bottom: 100px;
     touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;
 }
 
-* {
-    -webkit-tap-highlight-color: transparent;
-}
+.content { padding: 20px; }
 
-/* 2. Top Bar (Back Button Area) */
 .top-bar {
     position: sticky;
     top: 0;
     padding-top: env(safe-area-inset-top);
     background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px); 
+    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     padding-left: 15px;
@@ -31,72 +25,31 @@ body {
 
 .back-btn { text-decoration: none; color: #007aff; font-size: 17px; }
 
-/* 3. Content & Cards */
-.content { padding: 20px; }
-
 .card {
     background: white;
     border-radius: 12px;
     padding: 15px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
 }
 
-/* 4. Inputs (The "No Zoom" Fix) */
+/* NO ZOOM FIX */
 input[type="text"] {
-    font-size: 16px !important;
+    font-size: 16px !important; 
     padding: 12px;
     border: 1px solid #d1d1d6;
     border-radius: 10px;
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
+    flex: 1;
 }
 
-/* 5. Buttons */
+.btn-primary { background: #34c759; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 600; }
+.btn-primary:active { background-color: #248a3d !important; transform: scale(0.95); }
 
-#taskList button:active {
-    background-color: rgba(52, 199, 89, 0.2);
-    border-radius: 50%;
-    transform: scale(1.2); 
-    transition: transform 0.1s;
-}
+.btn-danger { background: #ff3b30; color: white; border: none; padding: 12px; border-radius: 10px; width:100%; }
+.btn-danger:active { opacity: 0.8; }
 
-.btn-primary { 
-    background: #34c759; 
-    color: white; 
-    border: none; 
-    padding: 12px; 
-    border-radius: 10px; 
-    font-weight: 600;
-    font-size: 16px;
-}
-
-.btn-danger { 
-    background: #ff3b30; 
-    color: white; 
-    border: none; 
-    padding: 12px; 
-    border-radius: 10px; 
-    width: 100%;
-    font-size: 16px;
-}
-
-.btn-primary:active {
-    background-color: #248a3d !important;
-    transform: scale(0.98);
-}
-
-.btn-danger:active {
-    background-color: #b32b23 !important;
-    transform: scale(0.98);
-}
-
-
-
-/* 6. Bottom Navbar */
 .navbar {
     position: fixed;
     bottom: 0;
@@ -106,7 +59,7 @@ input[type="text"] {
     border-top: 0.5px solid #d1d1d6;
     display: flex;
     justify-content: space-around;
-    padding-bottom: env(safe-area-inset-bottom); /* Fix for home bar */
+    padding-bottom: env(safe-area-inset-bottom);
     height: 65px;
 }
 
@@ -118,13 +71,8 @@ input[type="text"] {
     text-decoration: none;
     color: #007aff;
     font-size: 10px;
-    font-weight: 500;
 }
 
-.nav-item span { margin-top: 4px; }
+.nav-item:active { opacity: 0.4; }
 
-.nav-item:active, .back-btn:active {
-    opacity: 0.5; /* This is how standard iOS icons react */
-    background-color: rgba(0, 122, 255, 0.1); /* Very light blue flash */
-    border-radius: 8px;
-}
+#taskList button:active { transform: scale(1.4); transition: 0.1s; }

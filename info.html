@@ -1,34 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <link rel="stylesheet" href="style.css">
-    <link rel="apple-touch-icon" href="icon.png">
 </head>
-
-
 <body>
-    <div class="top-bar">
-        <a href="index.html" class="back-btn">＜ Back</a>
-    </div>
-
+    <div class="top-bar"><a href="index.html" class="back-btn">＜ Back</a></div>
     <div class="content" style="text-align: center;">
         <h2>Statistics</h2>
-        <div class="card">
-            <p style="color: #8e8e93;">Total Completed</p>
-            <h1 id="stat-count" style="font-size: 48px; margin: 10px 0;">0</h1>
+        <div class="card" style="flex-direction: column; padding: 30px;">
+            <p style="color: #8e8e93; margin:0;">Total Completed</p>
+            <h1 id="stat-count" style="font-size: 64px; margin: 10px 0;">0</h1>
         </div>
     </div>
-
     <nav class="navbar">
         <a href="settings.html" class="nav-item">⚙️<span>Settings</span></a>
         <a href="info.html" class="nav-item">📊<span>Info</span></a>
         <a href="index.html" class="nav-item">🏠<span>Home</span></a>
     </nav>
-
     <script>
-        let count = localStorage.getItem('completed') || 0;
-        document.getElementById('stat-count').innerText = count;
+        document.getElementById('stat-count').innerText = localStorage.getItem('completed') || 0;
     </script>
 </body>
 </html>
