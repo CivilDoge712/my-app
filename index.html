@@ -27,22 +27,54 @@
         <a href="info.html" class="nav-item">📊<span>Info</span></a>
     </nav>
 
+        <!-- Inside index.html - replace your script section -->
     <script>
-        let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
-        renderTasks();
+        // 1. Initialise data
+        let tasks = [];
+        try {
+            const saved = localStorage.getItem('myTasks');
+            tasks = saved ? JSON.parse(saved) : [];
+        } catch (e) {
+            tasks = [];
+        }
 
+        // 2. Render function (Fixed HTML template)
+        function renderTasks() {
+            const list = document.getElementById('taskList');
+            if (!list) return;
+            
+            if (tasks.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#8e8e93;">No tasks yet!</p>';
+                return;
+            }
+
+            list.innerHTML = tasks.map((task, i) => `
+                <div class="task-card">
+                    <span class="task-text">${task.text}</span>
+                    <button class="tick-btn" onclick="deleteTask(${i})">✔</button>
+                </div>
+            `).join('');
+        }
+
+        // 3. Logic functions
         function addTask() {
             const input = document.getElementById('taskInput');
-            if (input.value.trim() === "") return;
-            tasks.push({ text: input.value });
+            const val = input.value.trim();
+            if (!val) return;
+            
+            tasks.push({ text: val });
             input.value = "";
             saveAndRender();
         }
 
         function deleteTask(index) {
             if (navigator.vibrate) navigator.vibrate(50);
+            
+            // Update stats
             let total = parseInt(localStorage.getItem('completed') || 0);
             localStorage.setItem('completed', total + 1);
+            
+            // Remove task
             tasks.splice(index, 1);
             saveAndRender();
         }
@@ -52,19 +84,13 @@
             renderTasks();
         }
 
-        function renderTasks() {
-            const list = document.getElementById('taskList');
-            list.innerHTML = tasks.map((task, i) => `
-                <div class="card" style="justify-content: space-between; margin-bottom: 10px;">
-                    <span>${task.text}</span>
-                    <button onclick="deleteTask(${i})" style="background:none; border:none; color:#34c759; font-size:24px;">✔</button>
-                </div>
-            `).join('');
-        }
+        // Run on load
+        window.onload = renderTasks;
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         }
     </script>
+
 </body>
 </html>
