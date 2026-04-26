@@ -5,76 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Task App</title>
+    <title>Task Master</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Notch Space -->
     <div style="height: env(safe-area-inset-top); background: white;"></div>
     
     <div class="content">
         <h1>My Tasks</h1>
-        <div class="card" style="display: flex; gap: 10px;">
-            <input type="text" id="taskInput" placeholder="New task...">
-            <button onclick="addTask()" class="btn-primary" style="width: auto;">Add</button>
+        
+        <!-- Input Area with Dropdown -->
+        <div class="card" style="flex-direction: column; gap: 10px;">
+            <input type="text" id="taskInput" placeholder="What needs doing?">
+            
+            <div style="display: flex; gap: 10px; width: 100%;">
+                <select id="taskRepeat">
+                    <option value="Once">Once</option>
+                    <option value="Daily">Daily</option>
+                    <option value="Monday">Mondays</option>
+                    <option value="Tuesday">Tuesdays</option>
+                    <option value="Wednesday">Wednesdays</option>
+                    <option value="Thursday">Thursdays</option>
+                    <option value="Friday">Fridays</option>
+                    <option value="Saturday">Saturdays</option>
+                    <option value="Sunday">Sundays</option>
+                </select>
+                <button onclick="addTask()" class="btn-primary" style="flex: 1;">Add</button>
+            </div>
         </div>
+
+        <!-- Task List -->
         <div id="taskList"></div>
     </div>
 
+    <!-- Bottom Navigation -->
     <nav class="navbar">
         <a href="settings.html" class="nav-item">⚙️<span>Settings</span></a>
         <a href="info.html" class="nav-item">📊<span>Info</span></a>
     </nav>
 
-        <!-- Inside index.html - replace your script section -->
     <script>
-        // 1. Initialise data
-        let tasks = [];
-        try {
-            const saved = localStorage.getItem('myTasks');
-            tasks = saved ? JSON.parse(saved) : [];
-        } catch (e) {
-            tasks = [];
-        }
+        // 1. DATA INITIALIZATION
+        let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
+        let completedCount = parseInt(localStorage.getItem('completed') || 0);
 
-        // 2. Render function (Fixed HTML template)
-        function renderTasks() {
-            const list = document.getElementById('taskList');
-            if (!list) return;
-            
-            if (tasks.length === 0) {
-                list.innerHTML = '<p style="text-align:center; color:#8e8e93;">No tasks yet!</p>';
-                return;
+        // 2. RECURRING LOGIC: Bring back tasks if it's a new day
+        function checkRecurring() {
+            const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+            const lastDate = localStorage.getItem('lastOpenDate');
+            const currentDate = new Date().toDateString();
+
+            if (lastDate !== currentDate) {
+                // Get tasks that were "completed" but are set to Daily or Today's Day
+                let recurringTasks = JSON.parse(localStorage.getItem('recurringMaster')) || [];
+                
+                recurringTasks.forEach(task => {
+                    const isToday = task.schedule === "Daily" || task.schedule === today;
+                    const alreadyInList = tasks.some(t => t.text === task.text);
+                    
+                    if (isToday && !alreadyInList) {
+                        tasks.push(task);
+                    }
+                });
+                
+                localStorage.setItem('lastOpenDate', currentDate);
+                saveAndRender();
             }
-
-            list.innerHTML = tasks.map((task, i) => `
-                <div class="task-card">
-                    <span class="task-text">${task.text}</span>
-                    <button class="tick-btn" onclick="deleteTask(${i})">✔</button>
-                </div>
-            `).join('');
         }
 
-        // 3. Logic functions
+        // 3. CORE FUNCTIONS
         function addTask() {
             const input = document.getElementById('taskInput');
-            const val = input.value.trim();
-            if (!val) return;
+            const repeat = document.getElementById('taskRepeat');
+            if (!input.value.trim()) return;
+
+            const newTask = {
+                text: input.value.trim(),
+                schedule: repeat.value
+            };
+
+            tasks.push(newTask);
             
-            tasks.push({ text: val });
+            // If it's recurring, save it to the Master List too
+            if (repeat.value !== "Once") {
+                let master = JSON.parse(localStorage.getItem('recurringMaster')) || [];
+                if (!master.some(t => t.text === newTask.text)) {
+                    master.push(newTask);
+                    localStorage.setItem('recurringMaster', JSON.stringify(master));
+                }
+            }
+
             input.value = "";
             saveAndRender();
         }
 
         function deleteTask(index) {
-            if (navigator.vibrate) navigator.vibrate(50);
-            
-            // Update stats
-            let total = parseInt(localStorage.getItem('completed') || 0);
-            localStorage.setItem('completed', total + 1);
-            
-            // Remove task
+            // Haptic Feedback
+            if (navigator.vibrate) navigator.vibrate(60);
+
+            // Update Stats
+            completedCount++;
+            localStorage.setItem('completed', completedCount);
+
+            // Remove from active list
             tasks.splice(index, 1);
             saveAndRender();
         }
@@ -84,13 +120,33 @@
             renderTasks();
         }
 
-        // Run on load
-        window.onload = renderTasks;
+        function renderTasks() {
+            const list = document.getElementById('taskList');
+            if (!tasks.length) {
+                list.innerHTML = '<p style="text-align:center; color:#8e8e93; margin-top:20px;">All done for today! 🎉</p>';
+                return;
+            }
+
+            list.innerHTML = tasks.map((task, i) => `
+                <div class="task-card">
+                    <div style="display:flex; flex-direction:column;">
+                        <span class="task-text">${task.text}</span>
+                        <small style="color:#8e8e93; font-size:11px;">${task.schedule}</small>
+                    </div>
+                    <button class="tick-btn" onclick="deleteTask(${i})">✔</button>
+                </div>
+            `).join('');
+        }
+
+        // 4. STARTUP
+        window.onload = () => {
+            checkRecurring();
+            renderTasks();
+        };
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         }
     </script>
-
 </body>
 </html>
